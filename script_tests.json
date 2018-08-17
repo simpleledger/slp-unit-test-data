@@ -185,9 +185,9 @@
   "code": null
  },
  {
-  "msg": "(must be invalid: wrong size): 9-character ticker 'Satoshi_N' ascii",
+  "msg": "OK: 9-character ticker 'Satoshi_N' ascii",
   "script": "6a04534c500001010747454e45534953095361746f7368695f4e4c004c004c0001094c00080000000000000064",
-  "code": 10
+  "code": null
  },
  {
   "msg": "OK: 2-character ticker '\u4e2d\u672c' ('nakamoto' kanji) -- 6 bytes utf8",
@@ -195,9 +195,9 @@
   "code": null
  },
  {
-  "msg": "(must be invalid: wrong size): 4-character ticker '\u30ca\u30ab\u30e2\u30c8' ('nakamoto' katakana) -- 12 bytes utf8",
+  "msg": "OK: 4-character ticker '\u30ca\u30ab\u30e2\u30c8' ('nakamoto' katakana) -- 12 bytes utf8",
   "script": "6a04534c500001010747454e455349530ce3838ae382abe383a2e383884c004c004c0001094c00080000000000000064",
-  "code": 10
+  "code": null
  },
  {
   "msg": "(must be invalid: wrong size): Genesis with 0-byte decimals",
