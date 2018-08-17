@@ -7,13 +7,13 @@ Such a consensus break could start somewhere extremely small, such as if one val
 
 ## Overview of tests
 
-Link to SLP1 specification: https://github.com/simpleledger/protocol-spec/blob/master/Token_Type_1.md
+**Link to SLP1 specification: [https://github.com/simpleledger/protocol-spec/blob/master/Token_Type_1.md](https://github.com/simpleledger/protocol-spec/blob/master/Token_Type_1.md)**
 
 Upon release of SLP1 (SLP protocol with `token_type` = 1), the specification will be maintained at the link above in a relatively frozen state, only updated when necessary to address an ambiguity. By design the protocol can never be upgraded, rather to make changes it is required to choose an entirely new `token_type` --- effectively creating an entirely new protocol.
 
-These tests focus on SLP1. Part 1 is to test that all validators correctly accept / discard various forms of OP_RETURN messages. Part 2 is a test on full transactions with an emphasis on checking.
+These tests focus on SLP1. Part A is to test that all validators correctly accept / discard various forms of OP_RETURN messages. Part B is a test on full transactions with an emphasis on checking.
 
-## Parsing of OP_RETURN scripts
+## Part A: Parsing of OP_RETURN scripts
 
 **File: [script_tests.json](script_tests.json)**
 
@@ -43,7 +43,7 @@ Other:
 * 255 - The SLP token_type field is has an unsupported value. Depending on perspective this is not 'invalid' per se -- it simply cannot be parsed since the protocol for that token_type is not known. Like error code 3 these tests may not be applicable to some parsers.
 
 
-# Transaction input tests
+## Part B: Transaction input tests
 
 These tests involve providing raw transactions A,B,C,D,... that form inputs to transaction T. The SLP validity judgement (valid/invalid) of A,B,C,D,... is given as a test assumption, and the test is to determine the validity of T.
 
