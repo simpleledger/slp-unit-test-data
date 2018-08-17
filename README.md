@@ -45,6 +45,8 @@ Other:
 
 ## Part B: Transaction input tests
 
+**File: [tx_input_tests.json](tx_input_tests.json)**
+
 These tests involve providing raw transactions A,B,C,D,... that form inputs to transaction T. The SLP validity judgement (valid/invalid) of A,B,C,D,... is given as a test assumption, and the test is to determine the validity of T.
 
 (to be expanded and created)
