@@ -28,7 +28,7 @@ Note that it is not required for consensus that implementations agree on the rea
 Overall script error codes:
 * 1 - Basic error that prevents even parsing as a bitcoin script (currently, only for truncated scripts).
 * 2 - Disallowed opcodes (after OP_RETURN, only opcodes 0x01 - 0x4e may be used).
-* 3 - Not an SLP message (script is not OP_RETURN, or ). Note in some implementations, the parsers would never be given such non-SLP scripts in the first place. In such implementations, error code 3 tests may be skipped as they are not relevant.
+* 3 - Not an SLP message (script is not OP_RETURN, or lacks correct lokad ID). Note in some implementations, the parsers would never be given such non-SLP scripts in the first place. In such implementations, error code 3 tests may be skipped as they are not relevant.
 
 Reasons relating to the specified limits:
 * 10 - A push chunk has the wrong size.
