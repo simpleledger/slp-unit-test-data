@@ -3,6 +3,7 @@
 import json
 
 def reindent(fname):
+    """ Load then re-dump a json file with standard format (use for cleanup before committing). """
     with open(fname) as f:
         data = json.load(f)
     with open(fname,'w') as f:
