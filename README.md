@@ -47,16 +47,26 @@ Other:
 
 **File: [tx_input_tests.json](tx_input_tests.json)**
 
-These tests involve providing raw transactions A,B,C,D,... that form inputs to transaction T. The SLP validity judgement (valid/invalid) of A,B,C,D,... is given as a test assumption, and the test is to determine the validity of T.
+These tests involve providing raw transactions A,B,C,D,... that form inputs to transaction T. The SLP validity judgements (valid/invalid) of A,B,C,D,... are given as a test assumption, and the test is to determine the validity of T.
 
-(to be expanded and created)
+The file data is a list of test objects in JSON format. Each test has a `description` (human readable string describing test), a list of `when` preconditions and a list of `should` tests. Each `when` item contains a raw serialized transaction with a *given* SLP validity that should be assumed by the validator. Each `should` item contains a raw serialized transaction with *expected* SLP validity that should agree with the value obtained by the validator using the given information.
 
-* Enforcement of consensus rules on transaction format: OP_RETURN message placement, amount, and forbidding of multiple OP_RETURNs.
+Currently all tests have only one `should` item, and thus only require one step of validation.
+
+Note that these transactions are 'fake' since they lack scriptSigs and sometimes even lack any inputs, however, they are validly formatted transaction objects and each test case involves multiple transactions that refer to each other by their transaction hash in the usual manner. The reason for using such 'fake' transactions is to allow for self-contained, off-chain tests. Such off-chain transactions allow us to test some strange non-standard transactions that may in principle be encountered by SLP validators.
+
+Although the transaction hashes referenced in the inputs are all correct,  few different artificial objects do appear:
+
+- Transactions without any inputs (necessary to obtain self-contained transaction DAGs).
+- Addresses with pubKeyHash values (hex) of `aaaaaa...` (Alice), `b0b0b0...` (Bob), `cccccc...` (Carol), `dddddd...` (Dave), `eeeeee...` (Eve), and `ffffff...` (Frank).
+- In many cases the genesis transaction contents are irrelevant, and so SLP messages will often refer to a fake token_ids (genesis tx hash) `888888...` or `999999...` hex.
+
+Tests to be implemented:
+
+* Enforcement of consensus rules on transaction format: OP_RETURN message placement.
 * Tests that prove that the OP_RETURN is being understood in the correct manner.
-* Tests of correct integer overflow handling in token amount summation.
 * Tests of input/output summation.
 * Tests involving invalid inputs.
 * Tests involving SLP inputs of mismatched token_type.
 * Tests involving SLP inputs of mismatched token_id.
-* Tests of mint baton passing (passing baton to MINT or to SEND).
 * ...

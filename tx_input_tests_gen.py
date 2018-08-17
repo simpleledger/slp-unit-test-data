@@ -45,7 +45,9 @@ frank  = Address.from_P2PKH_hash(bytes.fromhex('ff'*20))
 
 print(alice, bob, carol, dave, eve, frank)
 
-
+# Fake token_ids for when a real genesis is not required
+fake_token_id1 = "88"*32
+fake_token_id2 = "99"*32
 
 
 
@@ -185,7 +187,91 @@ tests.extend([
          when   = [ dict(tx = alltxes[btxid], valid=False), dict(tx = alltxes[txid1], valid=True) ],
          should = [ dict(tx = alltxes[txid7], valid=False) ],
          ),
-])
+    ])
+
+
+## DAG 2 - large input sum and output sum >= 2**64
+
+txid1 = maketx([
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id2, [2**64-100]),
+                 (TYPE_ADDRESS, alice, 546),
+                ])
+txid2 = maketx([
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id2, [1000000]),
+                 (TYPE_ADDRESS, alice, 547),
+                ])
+txid3 = maketx([
+                fakeinput(txid1, 1),
+                fakeinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id2, [2**64 - 1000000, 1999900]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid4 = maketx([
+                fakeinput(txid1, 1),
+                fakeinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id2, [2**64 - 1000000, 1999901]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid5 = maketx([
+                fakeinput(txid1, 1),
+                fakeinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id2, [2**64 - 1000000, 1999899]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid6 = maketx([
+                fakeinput(txid1, 1),
+                fakeinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id2, [100, 100]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid7 = maketx([
+                fakeinput(txid1, 1),
+                fakeinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id2, [0, 0, 0, 2**64-1, 2**64-1]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+
+tests.extend([
+    dict(description = "When the token input amounts are (2**64-100, 1000000) and the SEND outputs exactly this amount, the SEND tx should be valid (output summation must not use 64-bit integers that overflow).",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
+         should = [ dict(tx = alltxes[txid3], valid=True), ],
+         ),
+    dict(description = "When the token input amounts are (2**64-100, 1000000) and the SEND outputs exceed this by 1 token, the SEND tx should be invalid.",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
+         should = [ dict(tx = alltxes[txid4], valid=False), ],
+         ),
+    dict(description = "When the token input amounts are (2**64-100, 1000000) and the SEND outputs fall short by 1 token, the SEND tx should be valid.",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
+         should = [ dict(tx = alltxes[txid5], valid=True), ],
+         ),
+    dict(description = "When the token input amounts are (2**64-100, 1000000) and the SEND outputs are very small numbers, the SEND tx should be valid.",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
+         should = [ dict(tx = alltxes[txid6], valid=True), ],
+         ),
+    dict(description = "When the token input amounts are (2**64-100, 1000000) but the sum of SEND outputs exceeds this (even when the token outputs will be truncated), the SEND tx should be invalid.",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
+         should = [ dict(tx = alltxes[txid7], valid=False), ],
+         ),
+    ])
 
 with open('tx_input_tests.json', 'w') as f:
     json.dump(tests, f, indent=1)
