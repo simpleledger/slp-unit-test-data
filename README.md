@@ -61,12 +61,3 @@ Although the transaction hashes referenced in the inputs are all correct,  few d
 - Addresses with pubKeyHash values (hex) of `aaaaaa...` (Alice), `b0b0b0...` (Bob), `cccccc...` (Carol), `dddddd...` (Dave), `eeeeee...` (Eve), and `ffffff...` (Frank).
 - In many cases the genesis transaction contents are irrelevant, and so SLP messages will often refer to a fake token_ids (genesis tx hash) `888888...` or `999999...` hex.
 
-Tests to be implemented:
-
-* Enforcement of consensus rules on transaction format: OP_RETURN message placement.
-* Tests that prove that the OP_RETURN is being understood in the correct manner.
-* Tests of input/output summation.
-* Tests involving invalid inputs.
-* Tests involving SLP inputs of mismatched token_type.
-* Tests involving SLP inputs of mismatched token_id.
-* ...

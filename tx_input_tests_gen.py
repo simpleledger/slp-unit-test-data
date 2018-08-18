@@ -444,7 +444,81 @@ tests.extend([
          ),
     ])
 
+## DAG 5 - check OP_RETURN placement / multiple OP_RETURN behaviours
 
+txid1 = maketx([
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [300,1000]),
+                 (TYPE_ADDRESS, alice, 546),
+                 (TYPE_ADDRESS, alice, 546),
+                ])
+txid2 = maketx([
+                fakeinput(txid1, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [200,0,20]),
+                 (TYPE_ADDRESS, bob, 547),
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [400,0,20]),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid3 = maketx([
+                fakeinput(txid1, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [400,0,20]),
+                 (TYPE_ADDRESS, bob, 547),
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [200,0,20]),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid4 = maketx([
+                fakeinput(txid1, 1),
+                ],
+               [
+                 (TYPE_ADDRESS, dave, 547),
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [0,400,0,20]),
+                 (TYPE_ADDRESS, bob, 547),
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [0,200,0,20]),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid5 = maketx([
+                fakeinput(txid1, 1),
+                ],
+               [
+                 (TYPE_ADDRESS, dave, 547),
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [0,200,0,20]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid6 = maketx([
+                fakeinput(txid1, 1),
+                ],
+               [
+                ])
+
+tests.extend([
+    dict(description = "When given multiple OP_RETURNS, the SEND should be SLP-valid based on the vout=0 OP_RETURN",
+         when   = [ dict(tx = alltxes[txid1], valid=True), ],
+         should = [ dict(tx = alltxes[txid2], valid=True), ],
+         ),
+    dict(description = "When given multiple OP_RETURNS, the SEND should be SLP-invalid based on the vout=0 OP_RETURN",
+         when   = [ dict(tx = alltxes[txid1], valid=True), ],
+         should = [ dict(tx = alltxes[txid3], valid=False), ],
+         ),
+    dict(description = "When given multiple OP_RETURNS, the SEND should be SLP-invalid since vout=0 is not an OP_RETURN",
+         when   = [ dict(tx = alltxes[txid1], valid=True), ],
+         should = [ dict(tx = alltxes[txid4], valid=False), ],
+         ),
+    dict(description = "When given multiple OP_RETURNS, the SEND should be SLP-invalid since vout=0 is not an OP_RETURN",
+         when   = [ dict(tx = alltxes[txid1], valid=True), ],
+         should = [ dict(tx = alltxes[txid5], valid=False), ],
+         ),
+    ## Skip this test since it would never relay.
+    #dict(description = "When given multiple OP_RETURNS, the SEND should be SLP-invalid since vout=0 is nonexistent (not even an OP_RETURN)",
+         #when   = [ dict(tx = alltxes[txid1], valid=True), ],
+         #should = [ dict(tx = alltxes[txid6], valid=False), ],
+         #),
+    ])
 
 with open('tx_input_tests.json', 'w') as f:
     json.dump(tests, f, indent=1)
