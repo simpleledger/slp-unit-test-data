@@ -251,27 +251,200 @@ txid7 = maketx([
                 ])
 
 tests.extend([
-    dict(description = "When the token input amounts are (2**64-100, 1000000) and the SEND outputs exactly this amount, the SEND tx should be valid (output summation must not use 64-bit integers that overflow).",
+    dict(description = "When the token input amounts are (2**64-100, 1000000) and the SEND outputs exactly this amount, the SEND tx should be SLP-valid (output summation must not use 64-bit integers that overflow).",
          when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
          should = [ dict(tx = alltxes[txid3], valid=True), ],
          ),
-    dict(description = "When the token input amounts are (2**64-100, 1000000) and the SEND outputs exceed this by 1 token, the SEND tx should be invalid.",
+    dict(description = "When the token input amounts are (2**64-100, 1000000) and the SEND outputs exceed this by 1 token, the SEND tx should be SLP-invalid.",
          when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
          should = [ dict(tx = alltxes[txid4], valid=False), ],
          ),
-    dict(description = "When the token input amounts are (2**64-100, 1000000) and the SEND outputs fall short by 1 token, the SEND tx should be valid.",
+    dict(description = "When the token input amounts are (2**64-100, 1000000) and the SEND outputs fall short by 1 token, the SEND tx should be SLP-valid.",
          when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
          should = [ dict(tx = alltxes[txid5], valid=True), ],
          ),
-    dict(description = "When the token input amounts are (2**64-100, 1000000) and the SEND outputs are very small numbers, the SEND tx should be valid.",
+    dict(description = "When the token input amounts are (2**64-100, 1000000) and the SEND outputs are very small numbers, the SEND tx should be SLP-valid.",
          when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
          should = [ dict(tx = alltxes[txid6], valid=True), ],
          ),
-    dict(description = "When the token input amounts are (2**64-100, 1000000) but the sum of SEND outputs exceeds this (even when the token outputs will be truncated), the SEND tx should be invalid.",
+    dict(description = "When the token input amounts are (2**64-100, 1000000) but the sum of SEND outputs exceeds this (even when the token outputs will be truncated), the SEND tx should be SLP-invalid.",
          when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
          should = [ dict(tx = alltxes[txid7], valid=False), ],
          ),
     ])
+
+
+## DAG 3 - testing incompatible token_ids
+
+txid1 = maketx([
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [1100]),
+                 (TYPE_ADDRESS, alice, 546),
+                ])
+txid2 = maketx([
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id2, [1000]),
+                 (TYPE_ADDRESS, alice, 547),
+                ])
+txid3 = maketx([
+                fakeinput(txid1, 1),
+                fakeinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [500, 501]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid4 = maketx([
+                fakeinput(txid1, 1),
+                fakeinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id2, [500, 501]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid5 = maketx([
+                fakeinput(txid1, 1),
+                fakeinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id2, [0, 0, 500, 501]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+
+
+tests.extend([
+    dict(description = "When given two inputs of differing token_id, the SEND should be SLP-valid because it spends less than the matching token_id",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
+         should = [ dict(tx = alltxes[txid3], valid=True), ],
+         ),
+    dict(description = "When given two inputs of differing token_id, the SEND should be SLP-invalid because it spends more than the tokens of matching token_id",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
+         should = [ dict(tx = alltxes[txid4], valid=False), ],
+         ),
+    dict(description = "When given two inputs of differing token_id, the SEND should be SLP-invalid because it spends more than the tokens of matching token_id",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
+         should = [ dict(tx = alltxes[txid5], valid=False), ],
+         ),
+    ])
+
+
+## DAG 4 - Input summation tests including invalid inputs
+
+txid1 = maketx([
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [300,1000]),
+                 (TYPE_ADDRESS, alice, 546),
+                 (TYPE_ADDRESS, alice, 546),
+                ])
+txid2 = maketx([
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [400,1000]),
+                 (TYPE_ADDRESS, alice, 547),
+                 (TYPE_ADDRESS, alice, 546),
+                ])
+txid3 = maketx([
+                fakeinput(txid1, 1),
+                fakeinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [600, 100]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid4 = maketx([
+                fakeinput(txid1, 1),
+                fakeinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [600, 101]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid5 = maketx([
+                fakeinput(txid1, 1),
+                fakeinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [100, 200]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid6 = maketx([
+                fakeinput(txid1, 1),
+                fakeinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [100, 201]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid7 = maketx([
+                fakeinput(txid1, 1),
+                fakeinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [200, 200]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid8 = maketx([
+                fakeinput(txid1, 1),
+                fakeinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [200, 201]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid9 = maketx([
+                fakeinput(txid1, 1),
+                fakeinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [0,0,0,0]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+
+tests.extend([
+    dict(description = "When given two SLP-valid inputs, the SEND should be SLP-valid since it outputs as much as the valid inputs",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
+         should = [ dict(tx = alltxes[txid3], valid=True), ],
+         ),
+    dict(description = "When given two SLP-valid inputs, the SEND should be SLP-invalid since it outputs more than the valid inputs",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
+         should = [ dict(tx = alltxes[txid4], valid=False), ],
+         ),
+    dict(description = "When given one SLP-valid input and another SLP-invalid input, the SEND should be SLP-valid since it outputs as much as the valid input",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=False), ],
+         should = [ dict(tx = alltxes[txid5], valid=True), ],
+         ),
+    dict(description = "When given one SLP-valid input and another SLP-invalid input, the SEND should be SLP-invalid since it outputs more than the valid input",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=False), ],
+         should = [ dict(tx = alltxes[txid6], valid=False), ],
+         ),
+    dict(description = "When given one SLP-valid input and another SLP-invalid input, the SEND should be SLP-valid since it outputs as much as the valid input",
+         when   = [ dict(tx = alltxes[txid1], valid=False), dict(tx = alltxes[txid2], valid=True), ],
+         should = [ dict(tx = alltxes[txid7], valid=True), ],
+         ),
+    dict(description = "When given one SLP-valid input and another SLP-invalid input, the SEND should be SLP-invalid since it outputs more than the valid input",
+         when   = [ dict(tx = alltxes[txid1], valid=False), dict(tx = alltxes[txid2], valid=True), ],
+         should = [ dict(tx = alltxes[txid8], valid=False), ],
+         ),
+    dict(description = "When given two SLP-invalid inputs, the SEND should be SLP-valid since it outputs 0 tokens",
+         when   = [ dict(tx = alltxes[txid1], valid=False), dict(tx = alltxes[txid2], valid=False), ],
+         should = [ dict(tx = alltxes[txid9], valid=True), ],
+         ),
+    ])
+
+
 
 with open('tx_input_tests.json', 'w') as f:
     json.dump(tests, f, indent=1)
