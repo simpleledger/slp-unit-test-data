@@ -59,7 +59,7 @@ fake_token_id2 = "99"*32
 
 ### Helper functions
 
-def fakeinput(txid, vout):
+def mkinput(txid, vout):
     """ Create an input record with empty scriptSig, as appropriate for Transaction object. """
     return {'prevout_hash':txid, 'prevout_n':vout, 'sequence':0, 'x_pubkeys': [], 'pubkeys': [], 'address': None, 'type': 'unknown', 'signatures': [], 'num_sig': 0, 'scriptSig': ''}
 
@@ -93,7 +93,7 @@ tests = []
 btxid = maketx([], [(TYPE_ADDRESS, eve, 10**8), (TYPE_ADDRESS, eve, 10**8), (TYPE_ADDRESS, eve, 10**8), (TYPE_ADDRESS, eve, 10**8),])
 
 txid1 = maketx([  # GENESIS
-                 fakeinput(btxid,0),
+                 mkinput(btxid,0),
                 ],
                [
                  slp.buildGenesisOpReturnOutput_V1('', '', '', '', 0, 2, 100),
@@ -102,8 +102,8 @@ txid1 = maketx([  # GENESIS
                  (TYPE_ADDRESS, frank, 100),
                 ])
 txid2 = maketx([  # SEND from the send output
-                 fakeinput(btxid,1),
-                 fakeinput(txid1,1),
+                 mkinput(btxid,1),
+                 mkinput(txid1,1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(txid1, [50,50]),
@@ -111,9 +111,9 @@ txid2 = maketx([  # SEND from the send output
                  (TYPE_ADDRESS, carol, 5),
                 ])
 txid3 = maketx([  # SEND that uses both token and baton
-                 fakeinput(btxid,1),
-                 fakeinput(txid1,1),
-                 fakeinput(txid1,2),
+                 mkinput(btxid,1),
+                 mkinput(txid1,1),
+                 mkinput(txid1,2),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(txid1, [50,50]),
@@ -121,8 +121,8 @@ txid3 = maketx([  # SEND that uses both token and baton
                  (TYPE_ADDRESS, carol, 5),
                 ])
 txid4 = maketx([  # SEND that uses only the baton
-                 fakeinput(btxid,1),
-                 fakeinput(txid1,2),
+                 mkinput(btxid,1),
+                 mkinput(txid1,2),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(txid1, [50,50]),
@@ -130,8 +130,8 @@ txid4 = maketx([  # SEND that uses only the baton
                  (TYPE_ADDRESS, carol, 5),
                 ])
 txid5 = maketx([  # MINT that uses only the baton
-                 fakeinput(btxid,1),
-                 fakeinput(txid1,2),
+                 mkinput(btxid,1),
+                 mkinput(txid1,2),
                 ],
                [
                  slp.buildMintOpReturnOutput_V1(txid1, None, 23),
@@ -139,9 +139,9 @@ txid5 = maketx([  # MINT that uses only the baton
                  (TYPE_ADDRESS, carol, 5),
                 ])
 txid6 = maketx([  # MINT that uses both baton and tokens
-                 fakeinput(txid1,1),
-                 fakeinput(btxid,1),
-                 fakeinput(txid1,2),
+                 mkinput(txid1,1),
+                 mkinput(btxid,1),
+                 mkinput(txid1,2),
                 ],
                [
                  slp.buildMintOpReturnOutput_V1(txid1, None, 23),
@@ -149,8 +149,8 @@ txid6 = maketx([  # MINT that uses both baton and tokens
                  (TYPE_ADDRESS, carol, 5),
                 ])
 txid7 = maketx([  # MINT that uses just tokens
-                 fakeinput(txid1,1),
-                 fakeinput(btxid,1),
+                 mkinput(txid1,1),
+                 mkinput(btxid,1),
                 ],
                [
                  slp.buildMintOpReturnOutput_V1(txid1, None, 23),
@@ -205,8 +205,8 @@ txid2 = maketx([
                  (TYPE_ADDRESS, alice, 547),
                 ])
 txid3 = maketx([
-                fakeinput(txid1, 1),
-                fakeinput(txid2, 1),
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id2, [2**64 - 1000000, 1999900]),
@@ -214,8 +214,8 @@ txid3 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid4 = maketx([
-                fakeinput(txid1, 1),
-                fakeinput(txid2, 1),
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id2, [2**64 - 1000000, 1999901]),
@@ -223,8 +223,8 @@ txid4 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid5 = maketx([
-                fakeinput(txid1, 1),
-                fakeinput(txid2, 1),
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id2, [2**64 - 1000000, 1999899]),
@@ -232,8 +232,8 @@ txid5 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid6 = maketx([
-                fakeinput(txid1, 1),
-                fakeinput(txid2, 1),
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id2, [100, 100]),
@@ -241,8 +241,8 @@ txid6 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid7 = maketx([
-                fakeinput(txid1, 1),
-                fakeinput(txid2, 1),
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id2, [0, 0, 0, 2**64-1, 2**64-1]),
@@ -289,8 +289,8 @@ txid2 = maketx([
                  (TYPE_ADDRESS, alice, 547),
                 ])
 txid3 = maketx([
-                fakeinput(txid1, 1),
-                fakeinput(txid2, 1),
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id1, [500, 501]),
@@ -298,8 +298,8 @@ txid3 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid4 = maketx([
-                fakeinput(txid1, 1),
-                fakeinput(txid2, 1),
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id2, [500, 501]),
@@ -307,8 +307,8 @@ txid4 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid5 = maketx([
-                fakeinput(txid1, 1),
-                fakeinput(txid2, 1),
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id2, [0, 0, 500, 501]),
@@ -350,8 +350,8 @@ txid2 = maketx([
                  (TYPE_ADDRESS, alice, 546),
                 ])
 txid3 = maketx([
-                fakeinput(txid1, 1),
-                fakeinput(txid2, 1),
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id1, [600, 100]),
@@ -359,8 +359,8 @@ txid3 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid4 = maketx([
-                fakeinput(txid1, 1),
-                fakeinput(txid2, 1),
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id1, [600, 101]),
@@ -368,8 +368,8 @@ txid4 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid5 = maketx([
-                fakeinput(txid1, 1),
-                fakeinput(txid2, 1),
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id1, [100, 200]),
@@ -377,8 +377,8 @@ txid5 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid6 = maketx([
-                fakeinput(txid1, 1),
-                fakeinput(txid2, 1),
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id1, [100, 201]),
@@ -386,8 +386,8 @@ txid6 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid7 = maketx([
-                fakeinput(txid1, 1),
-                fakeinput(txid2, 1),
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id1, [200, 200]),
@@ -395,8 +395,8 @@ txid7 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid8 = maketx([
-                fakeinput(txid1, 1),
-                fakeinput(txid2, 1),
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id1, [200, 201]),
@@ -404,8 +404,8 @@ txid8 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid9 = maketx([
-                fakeinput(txid1, 1),
-                fakeinput(txid2, 1),
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id1, [0,0,0,0]),
@@ -454,7 +454,7 @@ txid1 = maketx([
                  (TYPE_ADDRESS, alice, 546),
                 ])
 txid2 = maketx([
-                fakeinput(txid1, 1),
+                mkinput(txid1, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id1, [200,0,20]),
@@ -463,7 +463,7 @@ txid2 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid3 = maketx([
-                fakeinput(txid1, 1),
+                mkinput(txid1, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id1, [400,0,20]),
@@ -472,7 +472,7 @@ txid3 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid4 = maketx([
-                fakeinput(txid1, 1),
+                mkinput(txid1, 1),
                 ],
                [
                  (TYPE_ADDRESS, dave, 547),
@@ -482,7 +482,7 @@ txid4 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid5 = maketx([
-                fakeinput(txid1, 1),
+                mkinput(txid1, 1),
                 ],
                [
                  (TYPE_ADDRESS, dave, 547),
@@ -491,7 +491,7 @@ txid5 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid6 = maketx([
-                fakeinput(txid1, 1),
+                mkinput(txid1, 1),
                 ],
                [
                 ])
@@ -519,6 +519,110 @@ tests.extend([
          #should = [ dict(tx = alltxes[txid6], valid=False), ],
          #),
     ])
+
+## DAG 5 - Tests involving transactions following an over-output.
+
+txid1 = maketx([
+                ],
+               [
+                 slp.buildMintOpReturnOutput_V1(fake_token_id1, None, 100),
+                 (TYPE_ADDRESS, alice, 546),
+                ])
+txid2 = maketx([
+                mkinput(txid1, 1),
+                ],
+               [
+                slp.buildSendOpReturnOutput_V1(fake_token_id1, [200, 25]),
+                (TYPE_ADDRESS, bob, 1),
+                (TYPE_ADDRESS, alice, 1),
+                ])
+txid3 = maketx([
+                mkinput(txid2, 2),
+                ],
+               [
+                slp.buildSendOpReturnOutput_V1(fake_token_id1, [25]),
+                (TYPE_ADDRESS, carol, 1),
+                ])
+
+tests.extend([
+    dict(description = "When taking 100 tokens, the SEND should be SLP-invalid since it outputs 225 tokens.",
+         when   = [ dict(tx = alltxes[txid1], valid=True), ],
+         should = [ dict(tx = alltxes[txid2], valid=False), ],
+         ),
+    dict(description = "When taking SLP-invalid tokens, the SEND should be SLP-invalid since it sends >0 tokens.",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=False), ],
+         should = [ dict(tx = alltxes[txid3], valid=False), ],
+         ),
+    ])
+
+## DAG 6 - Tests involving a semi-realistic DAG
+
+txid1 = maketx([
+                ],
+               [
+                 slp.buildMintOpReturnOutput_V1(fake_token_id1, 241, 100),
+                 (TYPE_ADDRESS, alice, 546),
+                ])
+txid2 = maketx([
+                mkinput(txid1, 1),
+                ],
+               [
+                slp.buildSendOpReturnOutput_V1(fake_token_id1, [50,50]),
+                (TYPE_ADDRESS, bob, 1),
+                (TYPE_ADDRESS, alice, 1),
+                ])
+txid3a = maketx([
+                mkinput(txid2, 2), # alice spends
+                ],
+               [
+                slp.buildSendOpReturnOutput_V1(fake_token_id1, [40,]),
+                (TYPE_ADDRESS, carol, 1),
+                ])
+txid3b = maketx([
+                mkinput(txid2, 2), # alice spends
+                ],
+               [
+                slp.buildSendOpReturnOutput_V1(fake_token_id1, [60,]),
+                (TYPE_ADDRESS, carol, 1),
+                ])
+txid4 = maketx([
+                mkinput(txid2, 1), # bob spends
+                ],
+               [
+                slp.buildSendOpReturnOutput_V1(fake_token_id1, [40,]),
+                (TYPE_ADDRESS, carol, 1),
+                ])
+txid5 = maketx([
+                mkinput(txid3a, 1), # carol spends 40
+                mkinput(txid4, 1),  # carol spends 40
+                ],
+               [
+                slp.buildSendOpReturnOutput_V1(fake_token_id1, [55,]),
+                (TYPE_ADDRESS, dave, 1),
+                ])
+
+
+tests.extend([
+    dict(description = "When SEND splits tokens from MINT, should be SLP-valid.",
+         when   = [ dict(tx = alltxes[txid1], valid=True), ],
+         should = [ dict(tx = alltxes[txid2], valid=True), ],
+         ),
+    dict(description = "When SEND splits tokens from MINT, a further SEND should be SLP-valid.",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
+         should = [ dict(tx = alltxes[txid3a], valid=True), ],
+         ),
+    dict(description = "When SEND splits tokens from MINT, a further SEND should be SLP-invalid since it over-outputs.",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
+         should = [ dict(tx = alltxes[txid3b], valid=False), ],
+         ),
+    dict(description = "When SEND splits tokens from MINT, an eventual SEND merging the tokens should be SLP-valid.",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), dict(tx = alltxes[txid3a], valid=True), dict(tx = alltxes[txid4], valid=True), ],
+         should = [ dict(tx = alltxes[txid5], valid=True), ],
+         ),
+    ])
+
+
+
 
 with open('tx_input_tests.json', 'w') as f:
     json.dump(tests, f, indent=1)
