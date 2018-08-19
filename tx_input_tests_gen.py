@@ -497,19 +497,19 @@ txid6 = maketx([
                 ])
 
 tests.extend([
-    dict(description = "When given multiple OP_RETURNS, the SEND should be SLP-valid based on the vout=0 OP_RETURN",
+    dict(description = "When given valid tokens, the SEND with multiple OP_RETURNS should be SLP-valid based on the vout=0 OP_RETURN",
          when   = [ dict(tx = alltxes[txid1], valid=True), ],
          should = [ dict(tx = alltxes[txid2], valid=True), ],
          ),
-    dict(description = "When given multiple OP_RETURNS, the SEND should be SLP-invalid based on the vout=0 OP_RETURN",
+    dict(description = "When given valid tokens, the SEND with multiple OP_RETURNS should be SLP-invalid based on the vout=0 OP_RETURN",
          when   = [ dict(tx = alltxes[txid1], valid=True), ],
          should = [ dict(tx = alltxes[txid3], valid=False), ],
          ),
-    dict(description = "When given multiple OP_RETURNS, the SEND should be SLP-invalid since vout=0 is not an OP_RETURN",
+    dict(description = "When given valid tokens, the SEND with multiple OP_RETURNS should be SLP-invalid since vout=0 is not an OP_RETURN",
          when   = [ dict(tx = alltxes[txid1], valid=True), ],
          should = [ dict(tx = alltxes[txid4], valid=False), ],
          ),
-    dict(description = "When given multiple OP_RETURNS, the SEND should be SLP-invalid since vout=0 is not an OP_RETURN",
+    dict(description = "When given valid tokens, the SEND should be SLP-invalid since vout=0 is not an OP_RETURN",
          when   = [ dict(tx = alltxes[txid1], valid=True), ],
          should = [ dict(tx = alltxes[txid5], valid=False), ],
          ),

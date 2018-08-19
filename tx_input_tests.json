@@ -414,7 +414,7 @@
   ]
  },
  {
-  "description": "When given multiple OP_RETURNS, the SEND should be SLP-valid based on the vout=0 OP_RETURN",
+  "description": "When given valid tokens, the SEND with multiple OP_RETURNS should be SLP-valid based on the vout=0 OP_RETURN",
   "when": [
    {
     "tx": "0100000000030000000000000000406a04534c500001010453454e4420888888888888888888888888888888888888888888888888888888888888888808000000000000012c0800000000000003e822020000000000001976a914aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa88ac22020000000000001976a914aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa88ac00000000",
@@ -429,7 +429,7 @@
   ]
  },
  {
-  "description": "When given multiple OP_RETURNS, the SEND should be SLP-invalid based on the vout=0 OP_RETURN",
+  "description": "When given valid tokens, the SEND with multiple OP_RETURNS should be SLP-invalid based on the vout=0 OP_RETURN",
   "when": [
    {
     "tx": "0100000000030000000000000000406a04534c500001010453454e4420888888888888888888888888888888888888888888888888888888888888888808000000000000012c0800000000000003e822020000000000001976a914aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa88ac22020000000000001976a914aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa88ac00000000",
@@ -444,7 +444,7 @@
   ]
  },
  {
-  "description": "When given multiple OP_RETURNS, the SEND should be SLP-invalid since vout=0 is not an OP_RETURN",
+  "description": "When given valid tokens, the SEND with multiple OP_RETURNS should be SLP-invalid since vout=0 is not an OP_RETURN",
   "when": [
    {
     "tx": "0100000000030000000000000000406a04534c500001010453454e4420888888888888888888888888888888888888888888888888888888888888888808000000000000012c0800000000000003e822020000000000001976a914aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa88ac22020000000000001976a914aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa88ac00000000",
@@ -459,7 +459,7 @@
   ]
  },
  {
-  "description": "When given multiple OP_RETURNS, the SEND should be SLP-invalid since vout=0 is not an OP_RETURN",
+  "description": "When given valid tokens, the SEND should be SLP-invalid since vout=0 is not an OP_RETURN",
   "when": [
    {
     "tx": "0100000000030000000000000000406a04534c500001010453454e4420888888888888888888888888888888888888888888888888888888888888888808000000000000012c0800000000000003e822020000000000001976a914aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa88ac22020000000000001976a914aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa88ac00000000",
