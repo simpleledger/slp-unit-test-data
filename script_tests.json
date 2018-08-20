@@ -20,8 +20,18 @@
   "code": null
  },
  {
-  "msg": "(must be invalid) truncated script",
+  "msg": "Script ending mid-PUSH (one byte short) must be SLP-invalid",
   "script": "6a04534c500001010747454e455349534c004c004c004c0001004c000800000000000064",
+  "code": 1
+ },
+ {
+  "msg": "Script ending mid-PUSH (no length) must be SLP-invalid",
+  "script": "6a04534c500001010747454e455349534c004c004c004c0001004c004c",
+  "code": 1
+ },
+ {
+  "msg": "Script ending mid-PUSH (length is one byte short) must be SLP-invalid",
+  "script": "6a04534c500001010747454e455349534c004c004c004c0001004c004d00",
   "code": 1
  },
  {
