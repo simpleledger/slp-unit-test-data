@@ -110,16 +110,6 @@
   "code": null
  },
  {
-  "msg": "(must not be parsed any further: SLP unknown token_type): token_type set to 255 then nothing",
-  "script": "6a04534c500001ff",
-  "code": 255
- },
- {
-  "msg": "(must not be parsed any further: SLP unknown token_type): token_type set to 255 plus arbitrary data",
-  "script": "6a04534c500001ff01230456789abc",
-  "code": 255
- },
- {
   "msg": "OK: 2 bytes for token_type=1",
   "script": "6a04534c50000200010747454e455349534c004c004c004c0001004c00080000000000000064",
   "code": null
