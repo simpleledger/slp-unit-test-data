@@ -1,0 +1,18 @@
+{
+  "name": "slp-unit-test-data",
+  "version": "1.0.0",
+  "description": "SLP Unit Tests",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simpleledger/slp-unit-test-data.git"
+  },
+  "author": "Simple Ledger Protocol",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/simpleledger/slp-unit-test-data/issues"
+  },
+  "homepage": "https://github.com/simpleledger/slp-unit-test-data#readme"
+}
