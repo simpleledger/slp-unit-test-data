@@ -139,6 +139,15 @@ txid5 = maketx([  # MINT that uses only the baton
                  (TYPE_ADDRESS, bob, 5),
                  (TYPE_ADDRESS, carol, 5),
                 ])
+txid5a = maketx([  # MINT that uses only the baton
+                 mkinput(btxid,1),
+                 mkinput(txid1,2),
+                ],
+               [
+                 slp.buildMintOpReturnOutput_V2(txid1, None, 23),
+                 (TYPE_ADDRESS, bob, 5),
+                 (TYPE_ADDRESS, carol, 5),
+                ])
 txid6 = maketx([  # MINT that uses both baton and tokens
                  mkinput(txid1,1),
                  mkinput(btxid,1),
@@ -179,6 +188,10 @@ tests.extend([
     dict(description = "When the inputs are an SLP-invalid BCH-only tx and an SLP-valid GENESIS tx (spending only its baton output), the MINT tx should be SLP-valid.",
          when   = [ dict(tx = alltxes[btxid], valid=False), dict(tx = alltxes[txid1], valid=True) ],
          should = [ dict(tx = alltxes[txid5], valid=True) ],
+         ),
+     dict(description = "When the inputs are an SLP-invalid BCH-only tx and an SLP-valid GENESIS tx (spending only its baton output), the MINT tx should be SLP-invalid since version/type changed.",
+         when   = [ dict(tx = alltxes[btxid], valid=False), dict(tx = alltxes[txid1]) ],
+         should = [ dict(tx = alltxes[txid5a], valid=False) ],
          ),
     dict(description = "When the inputs are an SLP-invalid BCH-only tx and an SLP-valid GENESIS tx (spending both its token AND baton output), the MINT tx should be SLP-valid.",
          when   = [ dict(tx = alltxes[btxid], valid=False), dict(tx = alltxes[txid1], valid=True) ],
@@ -418,7 +431,16 @@ txid9 = maketx([
                 mkinput(txid2, 1),
                 ],
                [
-                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [0,0,0,0]),
+                 slp.buildSendOpReturnOutput_V1(genesis_txid, [0,0,0,0]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
+txid9a = maketx([
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V2(genesis_txid, [0,0,0,0]),
                  (TYPE_ADDRESS, bob, 547),
                  (TYPE_ADDRESS, carol, 547),
                 ])
@@ -453,8 +475,12 @@ tests.extend([
          should = [ dict(tx = alltxes[txid8], valid=False), ],
          ),
     dict(description = "When given two SLP-invalid inputs, the SEND should be SLP-valid since it outputs 0 tokens",
-         when   = [ dict(tx = alltxes[txid1], valid=False), dict(tx = alltxes[txid2], valid=False), dict(tx = alltxes[genesis_txid], valid=True)],
+         when   = [ dict(tx = alltxes[txid1], valid=False), dict(tx = alltxes[txid2], valid=False), dict(tx = alltxes[genesis_txid])],
          should = [ dict(tx = alltxes[txid9], valid=True), ],
+         ),
+     dict(description = "When given two SLP-invalid inputs, the 0 output SEND should be SLP-invalid since the version/type is different from GENESIS",
+         when   = [ dict(tx = alltxes[txid1], valid=False), dict(tx = alltxes[txid2], valid=False), dict(tx = alltxes[genesis_txid])],
+         should = [ dict(tx = alltxes[txid9a], valid=False), ],
          ),
     ])
 
