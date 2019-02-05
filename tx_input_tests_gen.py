@@ -358,6 +358,15 @@ txid3 = maketx([
                  (TYPE_ADDRESS, bob, 547),
                  (TYPE_ADDRESS, carol, 547),
                 ])
+txid3a = maketx([
+                mkinput(txid1, 1),
+                mkinput(txid2, 1),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V2(fake_token_id1, [600, 100]),
+                 (TYPE_ADDRESS, bob, 547),
+                 (TYPE_ADDRESS, carol, 547),
+                ])
 txid4 = maketx([
                 mkinput(txid1, 1),
                 mkinput(txid2, 1),
@@ -417,6 +426,10 @@ tests.extend([
     dict(description = "When given two SLP-valid inputs, the SEND should be SLP-valid since it outputs as much as the valid inputs",
          when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
          should = [ dict(tx = alltxes[txid3], valid=True), ],
+         ),
+     dict(description = "When given two SLP-valid inputs, the SEND should be SLP-invalid since token version/type changed",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
+         should = [ dict(tx = alltxes[txid3a], valid=False), ],
          ),
     dict(description = "When given two SLP-valid inputs, the SEND should be SLP-invalid since it outputs more than the valid inputs",
          when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
