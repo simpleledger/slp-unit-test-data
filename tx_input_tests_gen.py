@@ -662,6 +662,43 @@ tests.extend([
     ])
 
 
+txid1 = maketx([
+                 mkinput(genesis_txid, 2)
+                ],
+               [
+                 slp.buildMintOpReturnOutput_V1(genesis_txid, 2, 100),
+                 (TYPE_ADDRESS, bob, 546),
+                 (TYPE_ADDRESS, bob, 546),
+                ])
+
+txid2 = maketx([
+                 mkinput(txid1, 2)
+                ],
+               [
+                 slp.buildMintOpReturnOutput_V1(genesis_txid, 2, 100),
+                 (TYPE_ADDRESS, bob, 546),
+                 (TYPE_ADDRESS, bob, 546),
+                ])
+
+txid2a = maketx([
+                 mkinput(txid1, 2)
+                ],
+               [
+                 slp.buildMintOpReturnOutput_V2(genesis_txid, 2, 100),
+                 (TYPE_ADDRESS, bob, 546),
+                 (TYPE_ADDRESS, bob, 546),
+                ])
+
+tests.extend([
+    dict(description = "When MINT spends baton to another MINT baton, should be SLP-valid.",
+         when   = [ dict(tx = alltxes[txid1], valid=True)],
+         should = [ dict(tx = alltxes[txid2], valid=True), ],
+         ),
+     dict(description = "When MINT spends baton to another MINT baton, should be SLP-invalid due to token version/type mismatch.",
+         when   = [ dict(tx = alltxes[txid1], valid=True)],
+         should = [ dict(tx = alltxes[txid2a], valid=False), ],
+         ),
+     ])
 
 
 with open('tx_input_tests.json', 'w') as f:
