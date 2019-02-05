@@ -101,6 +101,7 @@ txid1 = maketx([  # GENESIS
                  (TYPE_ADDRESS, bob, 5),
                  (TYPE_ADDRESS, frank, 100),
                 ])
+genesis_txid = txid1
 txid2 = maketx([  # SEND from the send output
                  mkinput(btxid,1),
                  mkinput(txid1,1),
@@ -452,7 +453,7 @@ tests.extend([
          should = [ dict(tx = alltxes[txid8], valid=False), ],
          ),
     dict(description = "When given two SLP-invalid inputs, the SEND should be SLP-valid since it outputs 0 tokens",
-         when   = [ dict(tx = alltxes[txid1], valid=False), dict(tx = alltxes[txid2], valid=False), ],
+         when   = [ dict(tx = alltxes[txid1], valid=False), dict(tx = alltxes[txid2], valid=False), dict(tx = alltxes[genesis_txid], valid=True)],
          should = [ dict(tx = alltxes[txid9], valid=True), ],
          ),
     ])
