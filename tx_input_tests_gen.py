@@ -381,6 +381,30 @@ txid3a = maketx([
                  (TYPE_ADDRESS, bob, 547),
                  (TYPE_ADDRESS, carol, 547),
                 ])
+txid3b = maketx([
+                mkinput(txid1, 1),
+                mkinput(txid1, 2),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [1300]),
+                 (TYPE_ADDRESS, bob, 547),
+                ])
+txid3c = maketx([
+                mkinput(txid1, 1),
+                mkinput(txid1, 2),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [1301]),
+                 (TYPE_ADDRESS, bob, 547),
+                ])
+txid3d = maketx([
+                mkinput(txid1, 1),
+                mkinput(txid1, 2),
+                ],
+               [
+                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [301]),
+                 (TYPE_ADDRESS, bob, 547),
+                ])
 txid4 = maketx([
                 mkinput(txid1, 1),
                 mkinput(txid2, 1),
@@ -449,6 +473,18 @@ tests.extend([
     dict(description = "When given two SLP-valid inputs, the SEND should be SLP-valid since it outputs as much as the valid inputs",
          when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
          should = [ dict(tx = alltxes[txid3], valid=True), ],
+         ),
+     dict(description = "When given two SLP-valid inputs from the same txid, the SEND should be SLP-valid since it outputs as much as the valid inputs",
+         when   = [ dict(tx = alltxes[txid1], valid=True), ],
+         should = [ dict(tx = alltxes[txid3b], valid=True), ],
+         ),
+     dict(description = "When given two SLP-valid inputs from the same txid, the SEND should be SLP-invalid since it outputs more than the valid inputs",
+         when   = [ dict(tx = alltxes[txid1], valid=True), ],
+         should = [ dict(tx = alltxes[txid3c], valid=False), ],
+         ),
+     dict(description = "When given two SLP-valid inputs from the same txid, the SEND should be SLP-valid since it outputs less than the valid inputs",
+         when   = [ dict(tx = alltxes[txid1], valid=True), ],
+         should = [ dict(tx = alltxes[txid3d], valid=True), ],
          ),
      dict(description = "When given two SLP-valid inputs, the SEND should be SLP-invalid since token version/type changed",
          when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
