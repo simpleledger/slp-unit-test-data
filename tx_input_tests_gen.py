@@ -7,9 +7,9 @@ Generates the tx_input_tests.json file.
 # electron cash. Modify the directory name to point to your local copy of the
 # electron cash repository (which should contain a subdirectory 'lib/').
 import sys
-sys.path.append('../electron_cash/')
-sys.path.append('../electron-cash/')
-sys.path.append('../electroncash/')
+sys.path.append('./')
+# sys.path.append('../electron-cash/')
+# sys.path.append('../electroncash/')
 
 from lib.address import (PublicKey, Address, Script, ScriptOutput, hash160,
                       UnknownAddress, OpCodes as opcodes)
@@ -190,7 +190,7 @@ tests.extend([
          should = [ dict(tx = alltxes[txid5], valid=True) ],
          ),
      dict(description = "When the inputs are an SLP-invalid BCH-only tx and an SLP-valid GENESIS tx (spending only its baton output), the MINT tx should be SLP-invalid since version/type changed.",
-         when   = [ dict(tx = alltxes[btxid], valid=False), dict(tx = alltxes[txid1]) ],
+         when   = [ dict(tx = alltxes[btxid], valid=False), dict(tx = alltxes[txid1], valid=True) ],
          should = [ dict(tx = alltxes[txid5a], valid=False) ],
          ),
     dict(description = "When the inputs are an SLP-invalid BCH-only tx and an SLP-valid GENESIS tx (spending both its token AND baton output), the MINT tx should be SLP-valid.",
@@ -511,7 +511,7 @@ tests.extend([
          should = [ dict(tx = alltxes[txid8], valid=False), ],
          ),
     dict(description = "When given two SLP-invalid inputs, the SEND should be SLP-valid since it outputs 0 tokens",
-         when   = [ dict(tx = alltxes[txid1], valid=False), dict(tx = alltxes[txid2], valid=False), dict(tx = alltxes[genesis_txid])],
+         when   = [ dict(tx = alltxes[txid1], valid=False), dict(tx = alltxes[txid2], valid=False), dict(tx = alltxes[genesis_txid], valid=True)],
          should = [ dict(tx = alltxes[txid9], valid=True), ],
          ),
      dict(description = "When given two SLP-invalid inputs, the SEND should be SLP-invalid since GENESIS is invalid",
@@ -519,7 +519,7 @@ tests.extend([
          should = [ dict(tx = alltxes[txid9], valid=False), ],
          ),
      dict(description = "When given two SLP-invalid inputs, the 0 output SEND should be SLP-invalid since the version/type is different from GENESIS",
-         when   = [ dict(tx = alltxes[txid1], valid=False), dict(tx = alltxes[txid2], valid=False), dict(tx = alltxes[genesis_txid])],
+         when   = [ dict(tx = alltxes[txid1], valid=False), dict(tx = alltxes[txid2], valid=False), dict(tx = alltxes[genesis_txid], valid=True)],
          should = [ dict(tx = alltxes[txid9a], valid=False), ],
          ),
     ])
