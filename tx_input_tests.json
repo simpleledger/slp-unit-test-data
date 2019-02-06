@@ -15,6 +15,21 @@
   ]
  },
  {
+  "description": "When the input is an SLP-invalid BCH-only tx, the GENESIS tx should be SLP-invalid since not token type 1.",
+  "when": [
+   {
+    "tx": "01000000000400e1f505000000001976a914eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee88ac00e1f505000000001976a914eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee88ac00e1f505000000001976a914eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee88ac00e1f505000000001976a914eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee88ac00000000",
+    "valid": false
+   }
+  ],
+  "should": [
+   {
+    "tx": "0100000001e37a6849bf4f5d5c627bdf4b45ffa47771177b0cce75ae644cf1d220699f0914000000000000000000040000000000000000256a04534c500001020747454e455349534c004c004c004c000100010208000000000000006405000000000000001976a914aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa88ac05000000000000001976a914b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b088ac64000000000000001976a914ffffffffffffffffffffffffffffffffffffffff88ac00000000",
+    "valid": false
+   }
+  ]
+ },
+ {
   "description": "When the inputs are an SLP-invalid BCH-only tx and an SLP-valid GENESIS tx (spending its token output), the SEND tx should be SLP-valid.",
   "when": [
    {

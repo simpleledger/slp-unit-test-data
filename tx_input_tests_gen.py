@@ -102,6 +102,15 @@ txid1 = maketx([  # GENESIS
                  (TYPE_ADDRESS, frank, 100),
                 ])
 genesis_txid = txid1
+txid1a = maketx([  # GENESIS
+                 mkinput(btxid,0),
+                ],
+               [
+                 slp.buildGenesisOpReturnOutput_V2('', '', '', '', 0, 2, 100),
+                 (TYPE_ADDRESS, alice, 5),
+                 (TYPE_ADDRESS, bob, 5),
+                 (TYPE_ADDRESS, frank, 100),
+                ])
 txid2 = maketx([  # SEND from the send output
                  mkinput(btxid,1),
                  mkinput(txid1,1),
@@ -172,6 +181,10 @@ tests.extend([
     dict(description = "When the input is an SLP-invalid BCH-only tx, the GENESIS tx should be SLP-valid.",
          when   = [ dict(tx = alltxes[btxid], valid=False) ],
          should = [ dict(tx = alltxes[txid1], valid=True), ],
+         ),
+     dict(description = "When the input is an SLP-invalid BCH-only tx, the GENESIS tx should be SLP-invalid since not token type 1.",
+         when   = [ dict(tx = alltxes[btxid], valid=False) ],
+         should = [ dict(tx = alltxes[txid1a], valid=False), ],
          ),
     dict(description = "When the inputs are an SLP-invalid BCH-only tx and an SLP-valid GENESIS tx (spending its token output), the SEND tx should be SLP-valid.",
          when   = [ dict(tx = alltxes[btxid], valid=False), dict(tx = alltxes[txid1], valid=True) ],
