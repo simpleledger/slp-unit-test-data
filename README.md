@@ -7,7 +7,7 @@ Such a consensus break could start somewhere extremely small, such as if one val
 
 ## Overview of tests
 
-**Link to SLP1 specification: [https://github.com/simpleledger/protocol-spec/blob/master/Token_Type_1.md](https://github.com/simpleledger/protocol-spec/blob/master/Token_Type_1.md)**
+**Link to SLP1 specification: [Token Type 1](https://github.com/simpleledger/slp-specifications/blob/master/slp-token-type-1.md)**
 
 Upon release of SLP1 (SLP protocol with `token_type` = 1), the specification will be maintained at the link above in a relatively frozen state, only updated when necessary to address an ambiguity. By design the protocol can never be upgraded, rather to make changes it is required to choose an entirely new `token_type` --- effectively creating an entirely new protocol.
 
