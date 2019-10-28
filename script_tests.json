@@ -20,6 +20,11 @@
   "code": null
  },
  {
+    "msg": "OK: typical SEND for token_type=41",
+    "script": "6a04534c500001410453454e44208888888888888888888888888888888888888888a88888888888888888888888080000000000000001",
+    "code": null
+ },
+ {
   "msg": "Script ending mid-PUSH (one byte short) must be SLP-invalid",
   "script": "6a04534c500001010747454e455349534c004c004c004c0001004c000800000000000064",
   "code": 1
@@ -115,6 +120,11 @@
   "code": null
  },
  {
+    "msg": "OK: can have more than 1 SLP output for token_type=41 (we check quantity <=1 in tx_input_tests.py)",
+    "script": "6a04534c500001410453454e44208888888888888888888888888888888888888888a88888888888888888888888080000000000000001080000000000000001",
+    "code": null
+ },
+ {
     "msg": "(unsupported token type, must be token_type=1): 2 bytes for token_type=2",
     "script": "6a04534c50000200020747454e455349534c004c004c004c0001004c00080000000000000064",
     "code": 11
@@ -167,6 +177,11 @@
  {
   "msg": "(must be invalid: bad value): transaction_type 'send'",
   "script": "6a04534c500001010473656e64208888888888888888888888888888888888888888888888888888888888888888080000000000000042",
+  "code": 11
+ },
+ {
+  "msg": "(must be invalid: bad value): transaction_type 'SENÄ'",
+  "script": "6a04534c500001010453454eC4208888888888888888888888888888888888888888888888888888888888888888080000000000000042",
   "code": 11
  },
  {
