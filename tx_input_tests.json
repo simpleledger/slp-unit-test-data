@@ -626,7 +626,7 @@
   ]
  },
  {
-  "description": "When given two SLP-valid inputs, the SEND should be SLP-invalid since token version/type changed to NFT1 child type (having a valid child NFT1 GENESIS txid)",
+  "description": "When given two SLP-valid type 0x01 inputs, the SEND should be SLP-invalid since token version/type changed to NFT1 child type (having a valid child NFT1 GENESIS txid)",
   "when": [
    {
     "txid": "00d1961c68811400be16e4f724a721fa6e192242a75d2eb9b2518751bf1231ea",
@@ -658,7 +658,7 @@
   ]
  },
  {
-  "description": "When given two SLP-valid inputs, the SEND should be SLP-invalid since token version/type changed to NFT1 parent type (having fake child GENESIS txid)",
+  "description": "When given two SLP-valid type 0x01 inputs, the SEND should be SLP-invalid since token version/type changed to NFT1 parent type (having fake child GENESIS txid)",
   "when": [
    {
     "tx": "0100000000030000000000000000406a04534c500001010453454e4420888888888888888888888888888888888888888888888888888888888888888808000000000000012c0800000000000003e822020000000000001976a914aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa88ac22020000000000001976a914aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa88ac00000000",
@@ -672,10 +672,11 @@
   "should": [
    {
     "tx": "0100000002ea3112bf518751b2b92e5da74222196efa21a724f7e416be001481681c96d100010000000000000000ffb24ea26d4414a951a3d92744e85002f99ad4d920be6ef82fc46e92dec17ddb010000000000000000030000000000000000376a04534c500001810453454e4420888888888888888888888888888888888888888888888888888888888888888808000000000000000123020000000000001976a914b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b088ac23020000000000001976a914cccccccccccccccccccccccccccccccccccccccc88ac00000000",
-    "valid": false,
-    "allow_inconclusive": true
+    "valid": false
    }
-  ]
+  ],
+  "allow_inconclusive": true,
+  "inconclusive_reason": "missing-txn"
  },
  {
   "description": "When given two SLP-valid inputs, the SEND should be SLP-invalid since it outputs more than the valid inputs",
