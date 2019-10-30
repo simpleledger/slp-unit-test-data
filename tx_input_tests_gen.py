@@ -458,8 +458,8 @@ tests.extend([
          should = [ dict(tx = alltxes[txid6b], valid=True), ],
          ),
     dict(description = "When SLP-valid NFT1 child inputs, 0 quantity NFT1 child SEND must pass", # NFT1 specific test
-         when   = [ dict(tx = alltxes[txid6a], valid=True) ],
-         should = [ dict(tx = alltxes[txid6b2], valid=True), ],
+         when   = [ dict(txid=txid6a, tx=alltxes[txid6a], valid=True), dict(txid=txid6, tx=alltxes[txid6], valid=True), dict(tx = alltxes[txid1], valid=True)],
+         should = [ dict(txid=txid6b2, tx=alltxes[txid6b2], valid=True), ],
          ),
     dict(description = "When SLP-invalid inputs, 0 quantity NFT1 child SEND must pass", # NFT1 specific test
          when   = [ dict(tx = alltxes[btxid], valid=True) ],
@@ -556,7 +556,6 @@ tests.extend([
          when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
          should = [ dict(tx = alltxes[txid7], valid=False), ],
          ),
-     # TODO: Add NFT1 tests
     ])
 
 
@@ -667,7 +666,7 @@ nft1_txid1 = maketx([  # GENESIS NFT1 Parent (output = 1)
                  (TYPE_ADDRESS, frank, 100),
                 ])
 nft1_txid2 = maketx([  # GENESIS NFT1 Child Valid (from spending valid parent genesis)
-                 mkinput(txid1,1),
+                 mkinput(nft1_txid1,1),
                 ],
                [
                  slp.buildGenesisOpReturnOutput_V1('', '', '', '', 0, None, 1, token_type='SLP65'),
@@ -694,8 +693,8 @@ txid3a = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid3a1 = maketx([
-                mkinput(txid1, 1),
-                mkinput(txid2, 1),
+                mkinput(txid1_gen1, 1),
+                mkinput(txid1_gen2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(nft1_txid2, [1], token_type='SLP65'),
@@ -703,8 +702,8 @@ txid3a1 = maketx([
                  (TYPE_ADDRESS, carol, 547),
                 ])
 txid3a2 = maketx([
-                mkinput(txid1, 1),
-                mkinput(txid2, 1),
+                mkinput(txid1_gen1, 1),
+                mkinput(txid1_gen2, 1),
                 ],
                [
                  slp.buildSendOpReturnOutput_V1(fake_token_id1, [1], token_type='SLP129'),
@@ -808,17 +807,17 @@ tests.extend([
          should = [ dict(tx = alltxes[txid3d], valid=True), ],
          ),
      # dict(description = "When given two SLP-valid inputs, the SEND should be SLP-invalid since token version/type changed to NFT1 child type (having fake child NFT1 GENESIS txid)",
-     #     when   = [ dict(tx = alltxes[txid1_gen1], valid=True), dict(tx = alltxes[txid1_gen2], valid=True), ],
-     #     should = [ dict(tx = alltxes[txid3a], valid=False), ],
+     #     when   = [ dict(txid=txid1_gen1, tx = alltxes[txid1_gen1], valid=True), dict(txid=txid1_gen2, tx = alltxes[txid1_gen2], valid=True), ],
+     #     should = [ dict(txid=txid3a, tx = alltxes[txid3a], valid=False, allow_inconclusive=True), ],
      #     ),
      dict(description = "When given two SLP-valid inputs, the SEND should be SLP-invalid since token version/type changed to NFT1 child type (having a valid child NFT1 GENESIS txid)",
-         when   = [ dict(txid = txid1, tx = alltxes[txid1], valid=True), dict(txid = txid2, tx = alltxes[txid2], valid=True), dict(txid = nft1_txid2, tx = alltxes[nft1_txid2], valid=True), dict(txid = nft1_txid1, tx = alltxes[nft1_txid1], valid=True)],
+         when   = [ dict(txid=txid1_gen1, tx = alltxes[txid1_gen1], valid=True), dict(txid = txid1_gen2, tx = alltxes[txid1_gen2], valid=True), dict(txid = nft1_txid1, tx = alltxes[nft1_txid1], valid=True), dict(txid = nft1_txid2, tx = alltxes[nft1_txid2], valid=True)],
          should = [ dict(txid = txid3a1, tx = alltxes[txid3a1], valid=False), ],
          ),
-     # dict(description = "When given two SLP-valid inputs, the SEND should be SLP-invalid since token version/type changed to NFT1 parent type (having fake child GENESIS txid)",
-     #     when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
-     #     should = [ dict(tx = alltxes[txid3a2], valid=False), ],
-     #     ),
+     dict(description = "When given two SLP-valid inputs, the SEND should be SLP-invalid since token version/type changed to NFT1 parent type (having fake child GENESIS txid)",
+         when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
+         should = [ dict(tx = alltxes[txid3a2], valid=False, allow_inconclusive=True), ],
+         ),
     dict(description = "When given two SLP-valid inputs, the SEND should be SLP-invalid since it outputs more than the valid inputs",
          when   = [ dict(tx = alltxes[txid1], valid=True), dict(tx = alltxes[txid2], valid=True), ],
          should = [ dict(tx = alltxes[txid4], valid=False), ],
