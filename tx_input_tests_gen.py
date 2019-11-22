@@ -182,10 +182,6 @@ tests.extend([
          when   = [ dict(tx = alltxes[btxid], valid=False) ],
          should = [ dict(tx = alltxes[txid1], valid=True), ],
          ),
-    dict(description = "When the input is an SLP-invalid BCH-only tx, the GENESIS tx should be SLP-invalid since it is not token type 1 or 129 (NFT1 parent).",
-         when   = [ dict(tx = alltxes[btxid], valid=False) ],
-         should = [ dict(tx = alltxes[txid1a], valid=False), ],
-         ),
     dict(description = "When the inputs are an SLP-invalid BCH-only tx and an SLP-valid GENESIS tx (spending its token output), the SEND tx should be SLP-valid.",
          when   = [ dict(tx = alltxes[btxid], valid=False), dict(tx = alltxes[txid1], valid=True) ],
          should = [ dict(tx = alltxes[txid2], valid=True) ],
@@ -268,26 +264,6 @@ txid2c = maketx([  # GENESIS NFT1 Child (invalid due to valid NFT1 parent not at
                  (TYPE_ADDRESS, bob, 5),
                  (TYPE_ADDRESS, frank, 100),
                 ])
-txid3 = maketx([  # GENESIS NFT1 Child (invalid qty > 1 from spending valid parent genesis)
-                 mkinput(txid1,1),
-                ],
-               [
-                 slp.buildGenesisOpReturnOutput_V1('', '', '', '', 0, None, 2, token_type='SLP65'),
-                 (TYPE_ADDRESS, alice, 5),
-                 (TYPE_ADDRESS, bob, 5),
-                 (TYPE_ADDRESS, frank, 100),
-                ])
-txid4 = maketx([  # GENESIS NFT1 Child (invalid qty = 0 from spending valid parent genesis)
-                 mkinput(txid1,1),
-                ],
-               [
-                 slp.buildGenesisOpReturnOutput_V1('', '', '', '', 0, None, 0, token_type='SLP65'),
-                 (TYPE_ADDRESS, alice, 5),
-                 (TYPE_ADDRESS, bob, 5),
-                 (TYPE_ADDRESS, frank, 100),
-                ])
-
-
 txid1a = maketx([  # GENESIS NFT1 Parent (output = 0)
                  mkinput(btxid,0),
                ],
@@ -432,14 +408,6 @@ tests.extend([
     dict(description = "When the second input is an SLP-valid NFT1 parent GENESIS tx, the NFT1 child GENESIS tx w/ qty=1 should be SLP-invalid.", # NFT1 specific test
          when   = [ dict(tx = alltxes[btxid], valid=True), dict(tx = alltxes[txid1], valid=True) ],
          should = [ dict(tx = alltxes[txid2c], valid=False), ],
-         ),
-    dict(description = "When the first input is an SLP-valid NFT1 parent GENESIS tx, the NFT1 child GENESIS w/ qty>1 should be SLP-invalid.", # NFT1 specific test
-         when   = [ dict(tx = alltxes[txid1], valid=True) ],
-         should = [ dict(tx = alltxes[txid3], valid=False), ],
-         ),
-    dict(description = "When the first input is an SLP-valid NFT1 parent GENESIS tx, the NFT1 child GENESIS w/ qty==0 should be SLP-invalid.", # NFT1 specific test
-         when   = [ dict(tx = alltxes[txid1], valid=True) ],
-         should = [ dict(tx = alltxes[txid4], valid=False), ],
          ),
     dict(description = "When the input is an SLP-invalid BCH-only tx, the token type 129 (NFT1 parent) GENESIS qty 0 tx should be SLP-valid.", # NFT11 specific test
          when   = [ dict(tx = alltxes[btxid], valid=False) ],
@@ -877,25 +845,6 @@ txid3 = maketx([
                  slp.buildSendOpReturnOutput_V1(fake_token_id1, [200,0,20]),
                  (TYPE_ADDRESS, carol, 547),
                 ])
-txid4 = maketx([
-                mkinput(txid1, 1),
-                ],
-               [
-                 (TYPE_ADDRESS, dave, 547),
-                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [0,400,0,20]),
-                 (TYPE_ADDRESS, bob, 547),
-                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [0,200,0,20]),
-                 (TYPE_ADDRESS, carol, 547),
-                ])
-txid5 = maketx([
-                mkinput(txid1, 1),
-                ],
-               [
-                 (TYPE_ADDRESS, dave, 547),
-                 slp.buildSendOpReturnOutput_V1(fake_token_id1, [0,200,0,20]),
-                 (TYPE_ADDRESS, bob, 547),
-                 (TYPE_ADDRESS, carol, 547),
-                ])
 txid6 = maketx([
                 mkinput(txid1, 1),
                 ],
@@ -910,14 +859,6 @@ tests.extend([
     dict(description = "When given valid tokens, the SEND with multiple OP_RETURNS should be SLP-invalid based on the vout=0 OP_RETURN",
          when   = [ dict(tx = alltxes[txid1], valid=True), ],
          should = [ dict(tx = alltxes[txid3], valid=False), ],
-         ),
-    dict(description = "When given valid tokens, the SEND with multiple OP_RETURNS should be SLP-invalid since vout=0 is not an OP_RETURN",
-         when   = [ dict(tx = alltxes[txid1], valid=True), ],
-         should = [ dict(tx = alltxes[txid4], valid=False), ],
-         ),
-    dict(description = "When given valid tokens, the SEND should be SLP-invalid since vout=0 is not an OP_RETURN",
-         when   = [ dict(tx = alltxes[txid1], valid=True), ],
-         should = [ dict(tx = alltxes[txid5], valid=False), ],
          ),
     ## Skip this test since it would never relay.
     #dict(description = "When given multiple OP_RETURNS, the SEND should be SLP-invalid since vout=0 is nonexistent (not even an OP_RETURN)",
