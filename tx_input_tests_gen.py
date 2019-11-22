@@ -259,7 +259,7 @@ txid2c = maketx([  # GENESIS NFT1 Child (invalid due to valid NFT1 parent not at
                  mkinput(txid1,1),
                 ],
                [
-                 slp.buildGenesisOpReturnOutput_V1('', '', '', '', 1, None, 1, token_type='SLP65'),
+                 slp.buildGenesisOpReturnOutput_V1('', '', '', '', 0, None, 1, token_type='SLP65'),
                  (TYPE_ADDRESS, alice, 5),
                  (TYPE_ADDRESS, bob, 5),
                  (TYPE_ADDRESS, frank, 100),
