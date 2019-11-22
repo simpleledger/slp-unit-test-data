@@ -196,7 +196,9 @@
     "tx": "0100000002e37a6849bf4f5d5c627bdf4b45ffa47771177b0cce75ae644cf1d220699f0914000000000000000000862d24004e63f0fb0268df737d3baddecd6e06b529058c8849b945416f61ea4c010000000000000000040000000000000000256a04534c500001410747454e455349534c004c004c004c0001004c0008000000000000000105000000000000001976a914aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa88ac05000000000000001976a914b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b088ac64000000000000001976a914ffffffffffffffffffffffffffffffffffffffff88ac00000000",
     "valid": false
    }
-  ]
+  ],
+  "allow_inconclusive": true,
+  "inconclusive_reason": "bad-parent-nft1-at-child-genesis"
  },
  {
   "description": "When the input is an SLP-invalid BCH-only tx, the token type 129 (NFT1 parent) GENESIS qty 0 tx should be SLP-valid.",
@@ -579,6 +581,30 @@
     "valid": true
    }
   ]
+ },
+ {
+  "description": "When given two SLP-valid type 0x01 inputs, the SEND should be SLP-invalid since token version/type changed to NFT1 child type (having fake child NFT1 GENESIS txid)",
+  "when": [
+   {
+    "txid": "00d1961c68811400be16e4f724a721fa6e192242a75d2eb9b2518751bf1231ea",
+    "tx": "0100000001e37a6849bf4f5d5c627bdf4b45ffa47771177b0cce75ae644cf1d220699f0914000000000000000000040000000000000000256a04534c500001010747454e455349534c004c004c004c000100010208000000000000006405000000000000001976a914aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa88ac05000000000000001976a914b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b088ac64000000000000001976a914ffffffffffffffffffffffffffffffffffffffff88ac00000000",
+    "valid": true
+   },
+   {
+    "txid": "db7dc1de926ec42ff86ebe20d9d49af90250e84427d9a351a914446da24eb2ff",
+    "tx": "0100000001e37a6849bf4f5d5c627bdf4b45ffa47771177b0cce75ae644cf1d220699f0914010000000000000000040000000000000000256a04534c500001010747454e455349534c004c004c004c000100010208000000000000006405000000000000001976a914aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa88ac05000000000000001976a914b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b088ac64000000000000001976a914ffffffffffffffffffffffffffffffffffffffff88ac00000000",
+    "valid": true
+   }
+  ],
+  "should": [
+   {
+    "txid": "6e092bd9e78dec00da46c0da32da0a98310b29df2ca383b6f46d498d37b3f48c",
+    "tx": "0100000002ea3112bf518751b2b92e5da74222196efa21a724f7e416be001481681c96d100010000000000000000ffb24ea26d4414a951a3d92744e85002f99ad4d920be6ef82fc46e92dec17ddb010000000000000000030000000000000000376a04534c500001410453454e4420888888888888888888888888888888888888888888888888888888888888888808000000000000000123020000000000001976a914b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b088ac23020000000000001976a914cccccccccccccccccccccccccccccccccccccccc88ac00000000",
+    "valid": false
+   }
+  ],
+  "allow_inconclusive": true,
+  "inconclusive_reason": "missing-txn"
  },
  {
   "description": "When given two SLP-valid type 0x01 inputs, the SEND should be SLP-invalid since token version/type changed to NFT1 child type (having a valid child NFT1 GENESIS txid)",
