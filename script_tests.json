@@ -21,7 +21,7 @@
  },
  {
     "msg": "OK: typical SEND for token_type=41",
-    "script": "6a04534c500001410453454e44208888888888888888888888888888888888888888a88888888888888888888888080000000000000001",
+    "script": "6a04534c500001410453454e44208888888888888888888888888888888888888888888888888888888888888888080000000000000001",
     "code": null
  },
  {
@@ -285,7 +285,7 @@
   "code": 10
  },
  {
-  "msg": "(must be invalid: wrong size): MINT with 32-byte token_id",
+  "msg": "(must be invalid: wrong size): MINT with 33-byte token_id",
   "script": "6a04534c50000101044d494e5421ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff4c00080000000000000064",
   "code": 10
  },
