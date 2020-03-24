@@ -285,7 +285,7 @@
   "code": 10
  },
  {
-  "msg": "(must be invalid: wrong size): MINT with 32-byte token_id",
+  "msg": "(must be invalid: wrong size): MINT with 33-byte token_id",
   "script": "6a04534c50000101044d494e5421ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff4c00080000000000000064",
   "code": 10
  },
