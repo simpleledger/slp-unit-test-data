@@ -39,6 +39,7 @@ Specific to one particular transaction type:
 
 * 21 - Too many optional values (currently, only if there are more than 19 token output amounts)
 * 22 - NFT1 GENESIS has illegal value 
+* 23 - Impossible state (used for minting of NFT1 child tokens)
 
 Other:
 * 255 - The SLP token_type field is has an unsupported value. Depending on perspective this is not 'invalid' per se -- it simply cannot be parsed since the protocol for that token_type is not known. Like error code 3 these tests may not be applicable to some parsers.

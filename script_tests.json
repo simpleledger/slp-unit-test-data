@@ -5,9 +5,29 @@
   "code": null
  },
  {
+  "msg": "OK: minimal GENESIS for token_type=41",
+  "script": "6a04534c500001410747454e455349534c004c004c004c0001004c00080000000000000001",
+  "code": null
+ },
+ {
+  "msg": "OK: minimal GENESIS for token_type=81",
+  "script": "6a04534c500001810747454e455349534c004c004c004c0001004c00080000000000000064",
+  "code": null
+ },
+ {
   "msg": "OK: typical MINT without baton",
   "script": "6a04534c50000101044d494e5420ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff4c00080000000000000064",
   "code": null
+ },
+ {
+  "msg": "OK: typical MINT without baton for token_type=81",
+  "script": "6a04534c50000181044d494e5420ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff4c00080000000000000064",
+  "code": null
+ },
+ {
+  "msg": "(must be invalid: impossible state): typical MINT without baton for token_type=41",
+  "script": "6a04534c50000141044d494e5420ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff4c00080000000000000064",
+  "code": 23
  },
  {
   "msg": "OK: typical 1-output SEND",
@@ -22,6 +42,11 @@
  {
     "msg": "OK: typical SEND for token_type=41",
     "script": "6a04534c500001410453454e44208888888888888888888888888888888888888888888888888888888888888888080000000000000001",
+    "code": null
+ },
+ {
+    "msg": "OK: typical SEND for token_type=81",
+    "script": "6a04534c500001810453454e44208888888888888888888888888888888888888888888888888888888888888888080000000000000001",
     "code": null
  },
  {
