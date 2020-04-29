@@ -982,7 +982,7 @@
   ]
  },
  {
-  "description": "When MINT spends two batons, one invalid at vin=0 and the other valid at vin=1.",
+  "description": "When MINT spends two batons, one invalid at vin=0 and the other valid at vin=1, should be a valid MINT.",
   "when": [
    {
     "tx": "0100000001ea3112bf518751b2b92e5da74222196efa21a724f7e416be001481681c96d100020000000000000000030000000000000000396a04534c50000101044d494e542000d1961c68811400be16e4f724a721fa6e192242a75d2eb9b2518751bf1231ea010208000000000000006422020000000000001976a914b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b088ac22020000000000001976a914b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b088ac00000000",
