@@ -347,7 +347,7 @@
  {
    "msg": "(must be invalid: bad value): NFT1 Child Genesis with mint_baton_vout!==null",
    "script": "6a04534c500001410747454e455349534c004c0001c04c0001000102080000000000000001",
-   "code": 22
+   "code": 23
  },
  {
    "msg": "(must be invalid: bad value): NFT1 Child Genesis with divisibility!==0",
