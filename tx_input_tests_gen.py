@@ -86,6 +86,37 @@ def maketx(inputs, outputs):
 
 tests = []
 
+# Basic empty input GENESIS tests
+txid_empty_type1 = maketx([  # GENESIS
+                ],
+                [
+                 slp.buildGenesisOpReturnOutput_V1('', '', '', '', 0, 2, 0),
+                ])
+txid_empty_type65 = maketx([  # GENESIS
+                ],
+               [
+                 slp.buildGenesisOpReturnOutput_V1('', '', '', '', 0, 2, 0, token_type='SLP65'),
+                ])
+txid_empty_type129 = maketx([  # GENESIS
+                ],
+               [
+                 slp.buildGenesisOpReturnOutput_V1('', '', '', '', 0, 2, 0, token_type='SLP129'),
+                ])
+
+tests.extend([
+    dict(description = "Genesis (type 1) should be valid for transaction with no inputs",
+         when   = [ ],
+         should = [ dict(tx = alltxes[txid_empty_type1], valid=True) ],
+         ),
+    dict(description = "Genesis (type 65) should be valid for transaction with no inputs",
+         when   = [ ],
+         should = [ dict(tx = alltxes[txid_empty_type65], valid=True) ],
+         ),
+    dict(description = "Genesis (type 129) should be invalid for transaction with no inputs",
+         when   = [ ],
+         should = [ dict(tx = alltxes[txid_empty_type129], valid=False) ],
+         ),
+])
 
 ## DAG 1 - basic GENESIS then various variants of SEND / MINT
 

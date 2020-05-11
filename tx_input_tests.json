@@ -1,5 +1,35 @@
 [
  {
+  "description": "Genesis (type 1) should be valid for transaction with no inputs",
+  "when": [],
+  "should": [
+   {
+    "tx": "0100000000010000000000000000256a04534c500001010747454e455349534c004c004c004c000100010208000000000000000000000000",
+    "valid": true
+   }
+  ]
+ },
+ {
+  "description": "Genesis (type 65) should be valid for transaction with no inputs",
+  "when": [],
+  "should": [
+   {
+    "tx": "0100000000010000000000000000256a04534c500001410747454e455349534c004c004c004c000100010208000000000000000000000000",
+    "valid": true
+   }
+  ]
+ },
+ {
+  "description": "Genesis (type 129) should be invalid for transaction with no inputs",
+  "when": [],
+  "should": [
+   {
+    "tx": "0100000000010000000000000000256a04534c500001810747454e455349534c004c004c004c000100010208000000000000000000000000",
+    "valid": false
+   }
+  ]
+ },
+ {
   "description": "When the input is an SLP-invalid BCH-only tx, the token type 1 GENESIS tx should be SLP-valid.",
   "when": [
    {
