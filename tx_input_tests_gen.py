@@ -295,6 +295,16 @@ txid2c = maketx([  # GENESIS NFT1 Child (invalid due to valid NFT1 parent not at
                  (TYPE_ADDRESS, bob, 5),
                  (TYPE_ADDRESS, frank, 100),
                 ])
+txid2d = maketx([  # GENESIS NFT1 Child (invalid due to valid NFT1 parent GENESIS not at input index 0)
+                 mkinput(txid1,3),
+                 mkinput(txid1,1),
+                ],
+               [
+                 slp.buildGenesisOpReturnOutput_V1('', '', '', '', 0, None, 1, token_type='SLP65'),
+                 (TYPE_ADDRESS, alice, 5),
+                 (TYPE_ADDRESS, bob, 5),
+                 (TYPE_ADDRESS, frank, 100),
+                ])
 txid1a = maketx([  # GENESIS NFT1 Parent (output = 0)
                  mkinput(btxid,0),
                ],
@@ -346,6 +356,17 @@ txid6 = maketx([ # SEND NFT1 Parent
                ])
 
 txid6a = maketx([ # GENESIS NFT1 Child valid
+                 mkinput(txid6, 1)
+               ],
+               [
+                 slp.buildGenesisOpReturnOutput_V1('', '', '', '', 0, None, 1, token_type='SLP65'),
+                 (TYPE_ADDRESS, alice, 5),
+                 (TYPE_ADDRESS, bob, 5),
+                 (TYPE_ADDRESS, frank, 100),
+               ])
+
+txid6a2 = maketx([ # GENESIS NFT1 Child (invalid since first input is not a NFT parent SEND)
+                 mkinput(txid6, 3),
                  mkinput(txid6, 1)
                ],
                [
@@ -407,25 +428,38 @@ txid6e = maketx([ # SEND NFT1 Child from output index 2 (is valid from multi-out
 
 # Create NFT1 Child from parent MINT output
 
-# txid7 = maketx([ # MINT NFT1 Parent 
-#                  mkinput(txid1, 2),
-#                ],
-#                [
-#                  slp.buildMintOpReturnOutput_V1(txid1, None, 1),
-#                  (TYPE_ADDRESS, alice, 5),
-#                  (TYPE_ADDRESS, bob, 5),
-#                  (TYPE_ADDRESS, frank, 100), 
-#                ])
+txid7 = maketx([ # MINT NFT1 Parent (valid)
+                 mkinput(txid1, 2),
+               ],
+               [
+                 slp.buildMintOpReturnOutput_V1(txid1, 2, 1, token_type='SLP129'),
+                 (TYPE_ADDRESS, alice, 5),
+                 (TYPE_ADDRESS, bob, 5),
+                 (TYPE_ADDRESS, frank, 100), 
+               ])
 
-# txid1b = maketx([  # GENESIS NFT1 Parent (output = 100)
-#                  mkinput(btxid,0),
-#                 ],
-#                [
-#                  slp.buildGenesisOpReturnOutput_V1('', '', '', '', 0, 2, 0, token_type='SLP129'),
-#                  (TYPE_ADDRESS, alice, 5),
-#                  (TYPE_ADDRESS, bob, 5),
-#                  (TYPE_ADDRESS, frank, 100),
-#                 ])
+txid7a = maketx([ # NFT1 Child GENESIS from MINT (invalid since first input is not a valid SLP output)
+                 mkinput(txid7, 3),
+                 mkinput(txid7, 1)
+               ],
+               [
+                 slp.buildGenesisOpReturnOutput_V1('', '', '', '', 0, None, 1, token_type='SLP65'),
+                 (TYPE_ADDRESS, alice, 5),
+                 (TYPE_ADDRESS, bob, 5),
+                 (TYPE_ADDRESS, frank, 100),
+               ])
+
+txid7b = maketx([ # NFT1 Child GENESIS from MINT (invalid since first input is a mint baton, not a valid SLP output amount)
+                 mkinput(txid7, 2),
+                 mkinput(txid7, 1)
+               ],
+               [
+                 slp.buildGenesisOpReturnOutput_V1('', '', '', '', 0, None, 1, token_type='SLP65'),
+                 (TYPE_ADDRESS, alice, 5),
+                 (TYPE_ADDRESS, bob, 5),
+                 (TYPE_ADDRESS, frank, 100),
+               ])
+
 
 tests.extend([
     dict(description = "When the input is an SLP-invalid BCH-only tx, the token type 129 (NFT1 parent) GENESIS tx should be SLP-valid.", # NFT11 specific test
@@ -440,6 +474,22 @@ tests.extend([
          when   = [ dict(tx = alltxes[btxid], valid=True), dict(tx = alltxes[txid1], valid=True) ],
          should = [ dict(tx = alltxes[txid2c], valid=False), ],
          allow_inconclusive=True, inconclusive_reason="bad-parent-nft1-at-child-genesis",
+         ),
+    dict(description = "When the fist input is change output from a SLP-valid NFT1 parent GENESIS tx and second second input is an SLP-valid NFT1 parent GENESIS tx, the NFT1 child GENESIS tx w/ qty=1 should be SLP-invalid.",
+         when   = [ dict(tx = alltxes[txid1], valid=True) ],
+         should = [ dict(tx = alltxes[txid2d], valid=False), ],
+         ),
+     dict(description = "When the fist input is change output from a SLP-valid NFT1 parent SEND tx and second second input is an SLP-valid NFT1 parent SEND tx, the NFT1 child GENESIS tx w/ qty=1 should be SLP-invalid.",
+         when   = [ dict(tx = alltxes[txid6], valid=True) ],
+         should = [ dict(tx = alltxes[txid6a2], valid=False), ],
+         ),
+     dict(description = "When the fist input is change output from a SLP-valid NFT1 parent MINT tx and second second input is an SLP-valid NFT1 parent MINT tx, the NFT1 child GENESIS tx w/ qty=1 should be SLP-invalid.",
+         when   = [ dict(tx = alltxes[txid7], valid=True) ],
+         should = [ dict(tx = alltxes[txid7a], valid=False), ],
+         ),
+     dict(description = "When the fist input is the mint baton from a SLP-valid NFT1 parent MINT tx and second second input is an SLP-valid NFT1 parent MINT tx, the NFT1 child GENESIS tx w/ qty=1 should be SLP-invalid.",
+         when   = [ dict(tx = alltxes[txid7], valid=True) ],
+         should = [ dict(tx = alltxes[txid7b], valid=False), ],
          ),
     dict(description = "When the input is an SLP-invalid BCH-only tx, the token type 129 (NFT1 parent) GENESIS qty 0 tx should be SLP-valid.", # NFT11 specific test
          when   = [ dict(tx = alltxes[btxid], valid=False) ],
